@@ -1,0 +1,31 @@
+{
+  "name": "apibranchhomework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --ui",
+    "codegen": "npx playwright codegen"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Usernumberprint/ApiBranchHomeWork.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Usernumberprint/ApiBranchHomeWork/issues"
+  },
+  "homepage": "https://github.com/Usernumberprint/ApiBranchHomeWork#readme",
+  "devDependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "@playwright/test": "^1.53.0",
+    "@types/node": "^24.0.1"
+  },
+  "dependencies": {
+    "faker": "^6.6.6"
+  }
+}
