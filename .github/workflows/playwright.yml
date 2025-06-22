@@ -28,5 +28,15 @@ jobs:
         run: npx playwright install --with-deps
       - name: tests
         run: npm run test
+      - name: Uploaf a Build Artifact
+      # Сохраняем pw/allure отчет
+      - uses: action/upload-artifact@v4
+        if : always()
+        continue-on-error : true
+        with:
+          # или test-result
+          name: allure-results
+          path: allure-results
+          retention-days: 3
      
     
