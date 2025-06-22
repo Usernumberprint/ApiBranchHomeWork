@@ -79,7 +79,7 @@ test('@6. get todos4', async ({request}) => {
 });
 
 test('@7.GET /todos (200)', async ({ request }) => {
-  const response = await request.get(`${baseURL}/todos`);
+  const response = await request.get(`${URL}/todos`);
   expect(response.status()).toBe(200);
 
   const data = await response.json();
@@ -89,7 +89,7 @@ test('@7.GET /todos (200)', async ({ request }) => {
 });
 
 test('@8.GET /todos/9999 (not exist)', async ({ request }) => {
-  const response = await request.get(`${baseURL}/todos/9999`);
+  const response = await request.get(`${URL}/todos/9999`);
   expect(response.status()).toBe(404);
 });
 });
