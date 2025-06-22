@@ -20,7 +20,7 @@ test.describe('Challenge', () => {
       console.log(token);
   });
 
-   test.only('Получить список челленджей', async ({request}) => {
+   test('Получить список челленджей', async ({request}) => {
     const response = await request.get(`${URL}challenges` , 
       { headers :
          {'x-challenger' : token, }
@@ -30,46 +30,6 @@ test.describe('Challenge', () => {
     expect(body.challenges.length).toBe(59);
     console.log(body);
 
-
+    });
     
-  // });
-  test.only('Получить список челленджей', async ({request}) => {
-    const response = await request.post(`${URL}challenges` , 
-      { headers :
-         {'x-challenger' : token, }
-      });
-
 });
-
-
-//  test('Регистрация нового пользователя', async ({ page }) => {
-
-//     const randomUser = new UserBuilder()
-//     .addEmail()
-//     .addPassword()
-//     .addUsernamed()
-//     .generate();
-//     email1 = randomUser.email;
-//     password1 = randomUser.password;
-//     username1 = randomUser.username;
-//     console.log(email1);
-//     console.log(password1);
-//     console.log(username1);
-//     // console.log(typeof(email1));
-//     // console.log(typeof(password1));
-//     const registerPage = new RegisterPage(page);
-//     const mainpage = new MainPage(page);
-//     const yourFeed = new YourPage(page);
-   
-
-  
-// //Готовим страницу для регистрации
-//     await mainpage.open();
-//     await mainpage.gotoLogin();
-//     await registerPage.signUp(randomUser);
-//     await expect(page.getByRole('navigation')).toBeVisible();
-//     await page.screenshot({ path: 'screenshot.png' });
-//     await expect(yourFeed.profile).toContainText(randomUser.username);
-//     await page.screenshot({ path: 'screenshots/Регистрация нового пользователя.png'});
-
-// });
