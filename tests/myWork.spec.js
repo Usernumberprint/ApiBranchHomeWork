@@ -1,7 +1,10 @@
-import { he } from '@faker-js/faker';
+import { el, he } from '@faker-js/faker';
 import { test, expect } from '@playwright/test';
+import { addAbortListener } from 'events';
 import { request } from 'http';
+import { title } from 'process';
 
+import { faker } from '@faker-js/faker';
 
 const URL = 'https://apichallenges.herokuapp.com/';
 let token;
@@ -9,7 +12,7 @@ let token;
 
 test.describe('Challenge', () => {
 
-   test.beforeAll('@post Challenger', async ({request}) => {
+   test.beforeAll(async ({request}) => {
       const response = await request.post(`${URL}challenger`, {headers : { 
         'x-challenger' : token,
       }});
@@ -27,8 +30,10 @@ test.describe('Challenge', () => {
       
 });
 
-test('@2. get todos1 ', async ({request}) => {
-      const response = await request.get(`${URL}todos`);
+test('@2. GET_TODOS', async ({request}) => {
+      const response = await request.get(`${URL}todos`, {headers : { 
+        'x-challenger' : token,
+      }});
       
       const body = await response.json(); //преобразовываем запрос response в формат json
       expect(body.todos.length).toBe(10);
@@ -36,26 +41,60 @@ test('@2. get todos1 ', async ({request}) => {
 
 });
 
+test('@3. GET_TODOS_FILTERED', async ({request}) => {
+      const response = await request.get(`${URL}todos`, {headers : { 
+        'x-challenger' : token,
+      }});
+      
+      const body = await response.json(); //преобразовываем запрос response в формат json
+      const filter = body.todos.map(todo => todo.id);
+      expect(filter.length).toBe(10);
+      console.log(filter)
+      const title = body.todos.map(todo => todo.title);
+      expect(title.length).toBe(10);
+      console.log(title);
 
-test('@3. get Todo', async ({request}) => {
-  const response = await request.get(`${URL}todo`);
+});
+
+test('@4. GET_TODOS_{id}', async ({request}) => {
+      const response = await request.get(`${URL}todos/1`, {headers : { 
+        'x-challenger' : token,
+      }});
+      
+      const body = await response.json(); //преобразовываем запрос response в формат json
+      const id = body.todos.id;
+      const title = body.todos.title;
+      const doneStatus = body.todos.doneStatus;
+      const description = body.todos.description;
+      expect(body.todos[0].id).toBe(1);
+      expect(body.todos[0].title).toBe('scan paperwork');
+      expect(body.todos[0].doneStatus).toBe(false);
+      expect(body.todos[0].description).toBe("");
+
+
+
+    });
+
+test('@5. get Todo', async ({request}) => {
+  const response = await request.get(`${URL}todo`, {headers : { 
+        'x-challenger' : token,
+      }});
   //const headers = await response.json();
   expect(response.status()).toBe(404);
   
 })
 
-test('@4. get todos2', async ({request}) => {
+test('@6. get todos проверка элемента из всего массива на атрибут', async ({request}) => {
   const response = await request.get(`${URL}todos`, {headers : {
     'x-challenger' : token,
   }});
   const headers = await response.json();
-  console.log(headers.todos);
-
-  expect(headers.todos.length).toBe(10);
-  console.log('Все верно, всего 10 id')
+  
+  expect(headers.todos[0].doneStatus).toBe(false);
+  console.log('Все верно, статус первого эелемента FALSE')
  
 });
-test('@5. get todos3', async ({request}) => {
+test('@7. get todos3', async ({request}) => {
   const response = await request.get(`${URL}todos`, {headers : {
     'x-challenger' : token,
   }});
@@ -68,28 +107,45 @@ test('@5. get todos3', async ({request}) => {
   };
 
 });
-test('@6. get todos4', async ({request}) => {
+test('@8. get todos4', async ({request}) => {
   const response = await request.get(`${URL}todos`, {headers : {
     'x-challenger' : token,
   }});
   const headers = await response.json();
-  const a= headers.todos[0];
+  expect(headers.todos[0].doneStatus).toBe(false);
   console.log(headers.todos[0]);
 
+
 });
 
-test('@7.GET /todos (200)', async ({ request }) => {
-  const response = await request.get(`${URL}/todos`);
+test('@9.GET /todos (200)', async ({ request }) => {
+  const response = await request.get(`${URL}/todos`, {headers : {
+    'x-challenger' : token,
+  }});
   expect(response.status()).toBe(200);
 
-  const data = await response.json();
-  console.log('Todos:', data);
+  const headers = await response.json();
+  console.log('Todos:', headers);
  
-  expect(Array.isArray(data)).toBeTruthy();
+  expect(Array.isArray(headers)).toBeFalsy();
 });
 
-test('@8.GET /todos/9999 (not exist)', async ({ request }) => {
-  const response = await request.get(`${URL}/todos/9999`);
+test('@10.GET /todos/9999 (not exist)', async ({ request }) => {
+  const response = await request.get(`${URL}/todos/9999`, {headers : {
+    'x-challenger' : token,
+  }});
   expect(response.status()).toBe(404);
 });
+
+
+test('@11.GET /todos/9999 (not exist)', async ({ request }) => {
+  const response = await request.get(`${URL}/todos/9999`, {headers : {
+    'x-challenger' : token,
+  }});
+  const headers = await response.json();
+
+  expect(response.status()).toBe(404);
+});
+
+
 });
