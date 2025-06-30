@@ -6,7 +6,10 @@
   "scripts": {
     "test": "npx playwright test",
     "test:ui": "npx playwright test --ui",
-    "codegen": "npx playwright codegen"
+    "codegen": "npx playwright codegen",
+    "allureOpen": "allure open",
+    "allureGenerate": "allure generate",
+    "allure": "allure generate --clean && allure open"
   },
   "repository": {
     "type": "git",
