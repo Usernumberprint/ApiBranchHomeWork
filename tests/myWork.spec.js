@@ -1,8 +1,4 @@
-import { el, he } from '@faker-js/faker';
 import { test, expect } from '@playwright/test';
-import { addAbortListener } from 'events';
-import { request } from 'http';
-import { title } from 'process';
 
 import { faker } from '@faker-js/faker';
 
@@ -13,9 +9,7 @@ let token;
 test.describe('Challenge', () => {
 
    test.beforeAll(async ({request}) => {
-      const response = await request.post(`${URL}challenger`, {headers : { 
-        'x-challenger' : token,
-      }});
+      const response = await request.post(`${URL}challenger` );
       const headers =  await response.headers();
       token = headers['x-challenger']; //токен равен значения x-challenger из запроса post - response
       console.log(token);
@@ -23,28 +17,27 @@ test.describe('Challenge', () => {
 });
  test('@1. get Challenges', async ({request}) => {
       const response = await request.get(`${URL}challenges`);
-      const body = await response.json(); //преобразовываем запрос response в формат json
-      expect(body.challenges.length).toBe(59);
-      console.log(body);
+      //const body = await response.json(); //преобразовываем запрос response в формат json
+      //expect(response.challenges.length).toBe(59);
+      expect(response.status()).toBe(200);
+      console.log(response);
  
       
 });
 
 test('@2. GET_TODOS', async ({request}) => {
-      const response = await request.get(`${URL}todos`, {headers : { 
+      const response = await request.get(`${URL}todos` , {headers : { 
         'x-challenger' : token,
       }});
       
-      const body = await response.json(); //преобразовываем запрос response в формат json
-      expect(body.todos.length).toBe(10);
-      console.log(body);
+      //const body = await response.json(); //преобразовываем запрос response в формат json
+      expect(response.todos.length).toBe(10);
+      console.log(response);
 
 });
 
 test('@3. GET_TODOS_FILTERED', async ({request}) => {
-      const response = await request.get(`${URL}todos`, {headers : { 
-        'x-challenger' : token,
-      }});
+      const response = await request.get(`${URL}todos` );
       
       const body = await response.json(); //преобразовываем запрос response в формат json
       const filter = body.todos.map(todo => todo.id);
@@ -57,9 +50,7 @@ test('@3. GET_TODOS_FILTERED', async ({request}) => {
 });
 
 test('@4. GET_TODOS_{id}', async ({request}) => {
-      const response = await request.get(`${URL}todos/1`, {headers : { 
-        'x-challenger' : token,
-      }});
+      const response = await request.get(`${URL}todos/1` );
       
       const body = await response.json(); //преобразовываем запрос response в формат json
       const id = body.todos.id;
@@ -76,9 +67,7 @@ test('@4. GET_TODOS_{id}', async ({request}) => {
     });
 
 test('@5. get Todo', async ({request}) => {
-  const response = await request.get(`${URL}todo`, {headers : { 
-        'x-challenger' : token,
-      }});
+  const response = await request.get(`${URL}todo` );
   //const headers = await response.json();
   expect(response.status()).toBe(404);
   

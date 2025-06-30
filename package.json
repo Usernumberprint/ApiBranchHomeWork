@@ -22,7 +22,7 @@
   "homepage": "https://github.com/Usernumberprint/ApiBranchHomeWork#readme",
   "devDependencies": {
     "@faker-js/faker": "^9.8.0",
-    "@playwright/test": "^1.53.0",
+    "@playwright/test": "^1.53.1",
     "@types/node": "^24.0.1"
   },
   "dependencies": {
